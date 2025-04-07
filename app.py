@@ -1,25 +1,15 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 def main():
-    st.title("Abrir Chat do WhatsApp (função declarada antes)")
-
-    # Declaramos a função JavaScript
-    st.markdown("""
-    <script>
-      function abrirWhatsAppAgora(numero) {
-          const link = "https://wa.me/" + numero;
-          window.open(link, "_self");
-      }
-    </script>
-    """, unsafe_allow_html=True)
+    st.title("Abrir Chat do WhatsApp (meta refresh)")
 
     numero = st.text_input("Número completo", "5511999999999")
 
     if st.button("Abrir WhatsApp"):
-        st.write("Tentando abrir WhatsApp...")
-        call_js = f"<script>abrirWhatsAppAgora('{numero}');</script>"
-        components.html(call_js, height=0)
+        st.write("Tentando abrir WhatsApp via meta refresh…")
+        link_whatsapp = f"https://wa.me/{numero}"
+        meta_tag = f'<meta http-equiv="refresh" content="0; url={link_whatsapp}"/>'
+        st.markdown(meta_tag, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
