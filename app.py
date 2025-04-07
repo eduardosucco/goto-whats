@@ -1,29 +1,22 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 def main():
-    st.title("Abrir Chat do WhatsApp")
-    st.write("Insira o número com DDD (ex: 5511999999999) e clique no botão para abrir a conversa:")
+    st.title("Abrir Chat do WhatsApp (tentando redirecionar automático)")
+    numero = st.text_input("Número completo (com DDD, ex: 5511999999999)", "5511999999999")
 
-    # 1) Primeiro: Defina o script que faz o redirecionamento
-    st.markdown("""
-    <script>
-      function abrirWhatsApp() {
-          var numero = document.getElementById("numero_wa").value;
-          var url = "https://wa.me/55" + numero;
-          window.location.href = url; // Faz o redirecionamento
-      }
-    </script>
-    """, unsafe_allow_html=True)
-
-    # 2) Criar o input que terá ID "numero_wa" para usar dentro do JS
-    numero = st.text_input("Número completo", value="11999999999", key="numero_wa")
-
-    # 3) Quando clica no botão, chamamos a função do passo 1
-    if st.button("Abrir WhatsApp"):
-        # Mensagem temporária
-        st.write("Tentando abrir o WhatsApp...")
-        # Chama a função via JS
-        st.markdown("<script>abrirWhatsApp();</script>", unsafe_allow_html=True)
+    if st.button("Abrir WhatsApp agora!"):
+        link_whatsapp = f"https://wa.me/{numero}"
+        # O JS abaixo abre o link na mesma aba (_self).  
+        # Se preferir outra aba, troque '_blank'.
+        js_code = f"""
+        <script>
+            window.open('{link_whatsapp}', '_self');
+        </script>
+        """
+        # Mostra mensagem e injeta o JS:
+        st.write("Tentando abrir WhatsApp...")
+        components.html(js_code, height=0)
 
 if __name__ == "__main__":
     main()
